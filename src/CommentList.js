@@ -1,4 +1,3 @@
-
 //CommentList.js
 import React, { Component } from 'react';
 import Comment from './Comment';
@@ -8,11 +7,12 @@ class CommentList extends Component {
 	render() {
 		let commentNodes = this.props.data.map(comment => {
 				return (
-						<Comment 
+						<Comment
 						author={ comment.author }
-						unique_id={ comment['_id'] }>
+						uniqueID = { comment['_id'] }
 						onCommentDelete={ this.props.onCommentDelete }
 						onCommentUpdate={ this.props.onCommentUpdate }
+
 						key={ comment['_id'] }>
 						{ comment.text}
 						</Comment>

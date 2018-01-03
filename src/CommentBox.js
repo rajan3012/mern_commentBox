@@ -22,10 +22,14 @@ class CommentBox extends Component {
 	}
 	handleCommentSubmit(comment) {
 		let comments = this.state.data;
-		comment.id = Date.now();
+		comment._id = Date.now();
 		let newComments = comments.concat([comment]);
 		this.setState({ data: newComments });
 		axios.post(this.props.url, comment)
+//			.then.post(this.props.url, comment)
+//				.then(res => {
+//					this.loadCommentsFromServer();
+//			})
 			.catch(err => {
 					console.error(err);
 					this.setState({ data: comments });
@@ -51,12 +55,23 @@ class CommentBox extends Component {
 		this.loadCommentsFromServer();
 		setInterval(this.loadCommentsFromServer, this.props.pollInterval);
 	}
+	//when incorporating into another project
+	//(with react-router for instance),
+	//this will prevent error messages every 2 seconds
+	//once the CommentBox is unmounted
+	componentWillUnmount() {
+		this.pollInterval && clearInterval(this.pollInterval);
+		this.pollInterval = null;
+	}
 	render() {
 		return (
 				<div style={ style.commentBox }>
 				<h2>Comments:</h2>
-				<CommentList data={ this.state.data }/>
-				<CommentForm />
+				<CommentList
+					onCommentDelete={ this.handleCommentDelete }
+					onCommentUpdate={ this.handleCommentUpdate }
+					data={ this.state.data }/>
+				<CommentForm onCommentSubmit={ this.handleCommentSubmit }/>
 				</div>
 				)
 	}
